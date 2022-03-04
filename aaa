@@ -1,0 +1,54 @@
+通过继承Thread创建多线程：
+public class test0 {
+    public static void main(String[] args){
+        Thread MyThread = new MyThread();
+        MyThread.start();
+    }
+}
+
+class MyThread extends Thread{
+    public void run(){
+        System.out.println("hello myThread " + Thread.currentThread().getName());
+    }
+}
+通过实现Runnable接口创建多线程：
+public class test0 {
+    public static void main(String[] args){
+        MyRunnable myRunnable = new MyRunnable();
+        Thread MyThread = new Thread(myRunnable);
+        MyThread.start();
+    }
+}
+
+class MyRunnable implements Runnable{
+    public void run(){
+        System.out.println("hello myRunnable " + Thread.currentThread().getName());
+    }
+}
+Run方法不支持传入参数，想传入各种参数需使用构造函数的有参构造形式：
+class ThreadA extends Thread{
+
+    private String name;
+    private int id;
+
+    public ThreadA(String name,int id){
+        this.name = name;
+        this.id = id;
+    }
+    @Override
+    public void run() {
+        System.out.println("Thread Name is:" + this.name);
+        System.out.println("Thread Id is:" + this.id);
+    }
+}
+通过实现Callable<V>接口实现多线程：
+Run方法没有返回值，且需要借助start方法进行线程启动。Call方法具有返回值，且可以直接通过call方法进行线程启动。
+import java.util.concurrent.Callable;
+class MyCallable implements Callable<String>{
+
+    public String call(){
+        return "myCall";
+    }
+}
+synchronized加锁，每次只能一个线程访问，可以修饰任意的对象和方法，一般给run方法加锁
+static synchronized是全局锁，而只有synchronized则只是实例锁而已
